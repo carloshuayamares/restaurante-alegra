@@ -8,10 +8,15 @@ app.use(express.json());
 // Inventario inicial
 let inventory = {
     tomato: 5,
-    onion: 5,
-    garlic: 5,
+    lemon: 5,
     potato: 5,
-    carrot: 5,
+    rice: 5,
+    ketchup: 5,
+    lettuce: 5,
+    onion: 5,
+    cheese: 5,
+    meat: 5,
+    chicken: 5,
 };
 
 // Ruta para manejar solicitudes de ingredientes
