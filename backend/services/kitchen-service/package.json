@@ -1,0 +1,15 @@
+{
+  "name": "kitchen-service",
+  "version": "1.0.0",
+  "description": "Recibe una orden, selecciona aleatoriamente un plato de las recetas disponibles, solicita los ingredientes al servicio de inventario, y espera a que estén todos disponibles para procesar la orden.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carlos Huayamares",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "express": "^4.21.1"
+  }
+}
