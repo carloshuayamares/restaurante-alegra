@@ -12,7 +12,11 @@ services:
     ports:
       - "3002:3002"
     environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
       DY_TABLE_RECIPES: "AVAILABLE-RECIPES"
+      TOTAL_RECIPES_NUMBER: 6
       INVENTORY_SERVICE_URL: "http://inventory-service:3003"
   
   inventory-service:
