@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors'); // Importar CORS
 const axios = require('axios');
 const app = express();
-const port = 3001;
+const port = process.env.PORT;
 
 app.use(cors()); // Habilitar CORS
 app.use(express.json());
