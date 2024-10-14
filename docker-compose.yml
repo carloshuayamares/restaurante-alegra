@@ -11,7 +11,8 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION}
       DY_TABLE_ORDERS: "ORDER-REGISTRATION"
-  
+      DY_TABLE_RECIPES: "AVAILABLE-RECIPES"
+
   kitchen-service:
     build: backend/services/kitchen-service
     container_name: kitchen-service

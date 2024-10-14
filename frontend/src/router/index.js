@@ -12,7 +12,7 @@ const routes = [
     { path: '/recetas', component: ListaDeRecetas },
     { path: '/ordenes', component: EstadoDeOrdenes },
     { path: '/ingredientes', component: IngredientesDisponibles },
-    //   { path: '/pedir-plato', component: HacerPedido },
+    // { path: '/pedir-plato', component: HacerPedido },
 ];
 const router = createRouter({
     history: createWebHistory(),
