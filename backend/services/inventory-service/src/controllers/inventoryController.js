@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const { saveItemInDynamo } = require('../utils/AWS')
+
 // Inventario inicial
 let inventory = {
   tomato: 5,
@@ -15,7 +17,12 @@ let inventory = {
 };
 
 module.exports = async (req, res, next) => {
-  const { recipe } = req.body;
+
+    const tableName = process.env.DY_MARKET_REQUEST
+
+  const { recipe, orderId, countOrder } = req.body;
+  let market = false
+  let temporal = 1
   console.log(`Request for ingredients received: ${JSON.stringify(recipe)}`);
 
   const missingIngredients = recipe.ingredients.filter(
@@ -30,11 +37,22 @@ module.exports = async (req, res, next) => {
           try {
               const response = await axios.get(`https://recruitment.alegra.com/api/farmers-market/buy?ingredient=${ingredient.name}`);
               const quantitySold = response.data.quantitySold;
+              market = true
+
+              const itemMarketRequest = {
+                'ID-MARKET': `OR${countOrder + 1}-MK${temporal}`,
+                orderId: `${orderId}`,
+                ingredient: ingredient.name,
+                quantitySold,
+              }
+
+              await saveItemInDynamo(tableName, itemMarketRequest)
 
               if (quantitySold > 0) {
                   inventory[ingredient.name] += quantitySold;
                   quantityNeeded -= quantitySold;
                   console.log(`Purchased ${quantitySold} of ${ingredient.name} from the market`);
+                  temporal += 1
               } else {
                   console.log(`${ingredient.name} not available at the market`);
                   break;  // No más unidades disponibles en el mercado
@@ -57,12 +75,12 @@ module.exports = async (req, res, next) => {
           inventory[ingredient.name] -= ingredient.qty;
       });
       console.log(`Ingredients for ${recipe.name} are ready. Proceeding with preparation.`);
-      return res.status(200).json({ success: true });
+      return res.status(200).json({ success: true, market });
   } else {
       console.log('Ingredients still missing');
       // mandar a un sqs
       // guardar en una tabla el estado en espera
-      return res.status(400).json({ success: false, message: 'Not all ingredients available' });
+      return res.status(200).json({ success: false, market, message: 'Not all ingredients available' });
   }
 
 }

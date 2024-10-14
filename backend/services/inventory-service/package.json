@@ -9,6 +9,7 @@
   "author": "Carlos Huayamares",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1691.0",
     "axios": "^1.7.7",
     "express": "^4.21.1"
   }

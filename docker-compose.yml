@@ -7,6 +7,10 @@ services:
       - "3001:3001"
     environment:
       PORT: 3001
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      DY_TABLE_ORDERS: "ORDER-REGISTRATION"
   
   kitchen-service:
     build: backend/services/kitchen-service
@@ -30,6 +34,10 @@ services:
     environment:
       PORT: 3003
       FARMERS_MARKET_URL: "https://recruitment.alegra.com/api/farmers-market/buy"
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      DY_MARKET_REQUEST: "MARKET-REQUEST"
   
   frontend:
     build: frontend

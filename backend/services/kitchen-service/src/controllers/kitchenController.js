@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { selectElementTableDY } = require('../services/AWS')
+const { selectElementTableDY } = require('../utils/AWS')
 
 module.exports = async (req, res, next) => {
   const order = req.body;
@@ -18,17 +18,18 @@ module.exports = async (req, res, next) => {
     // Solicitar los ingredientes al inventory-service
     const response = await axios.post('http://inventory-service:3003/api/request-ingredients', {
       recipe: selectedRecipe,
+      ...order,
     });
 
     if (response.data.success) {
       console.log(`Ingredients for ${selectedRecipe.name} are available, preparing the dish!`);
-      res.status(200).json({ message: 'Dish is being prepared' });
+      return res.status(200).json({ selectedRecipe, message: 'Dish is being prepared', ingredients: response.data.market ? 'Market': 'Inventory' });
     } else {
       console.log('Ingredients not available yet');
-      res.status(400).json({ message: 'Ingredients not available' });
+      return res.status(200).json({ selectedRecipe, message: 'Ingredients not available', ingredients: response.data.market ? 'Market': 'Inventory' });
     }
   } catch (error) {
     console.error('Error requesting ingredients:', error.message);
-    res.status(500).json({ message: 'Error preparing the dish' });
+    return res.status(500).json({ selectedRecipe, message: 'Error preparing the dish' });
   }
 };
