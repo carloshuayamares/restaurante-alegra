@@ -1,32 +1,39 @@
 const axios = require('axios');
 
-const { saveItemInDynamo, countItemsInDynamo } = require('../utils/AWS')
+const { saveItemsInDynamo, countItemsInDynamo } = require('../utils/AWS')
 
 module.exports = async (req, res, next) => {
 
   const tableName = process.env.DY_TABLE_ORDERS
+  const { cantidad } = req.body
+  console.log({cantidad})
 
   try {
-    const order = { orderId: Date.now() };
-    console.log(`New order received: ${JSON.stringify(order)}`);
-
     const countOrder = await countItemsInDynamo(tableName)
+    const arrayDataOrder = []
 
-    // Enviar la orden a kitchen-service
-    const response = await axios.post('http://kitchen-service:3002/api/order', { ...order, countOrder });
-    console.log({response: response.data})
+    for (let i = 0; i < parseInt(cantidad); i++) {
 
-
-    const dataOrder = {
-      ...order,
-      'ID-ORDER': `ORDER N°${countOrder + 1}`,
-      name: response.data.selectedRecipe.name,
-      'ID-RECIPE': response.data.selectedRecipe['ID-RECIPE'],
-      status: response.data.message,
-      ingredients: response.data.ingredients,
+      const countOrderOne = countOrder + i
+      const order = { orderId: Date.now() };
+      console.log(`New order received: ${JSON.stringify(order)}`);
+  
+  
+      // Enviar la orden a kitchen-service
+      const response = await axios.post('http://kitchen-service:3002/api/order', { ...order, countOrder: countOrderOne });
+      console.log({response: response.data})
+  
+      const dataOrder = {
+        ...order,
+        'ID-ORDER': `ORDER N°${countOrderOne + 1}`,
+        name: response.data.selectedRecipe.name,
+        'ID-RECIPE': response.data.selectedRecipe['ID-RECIPE'],
+        status: response.data.message,
+        ingredients: response.data.ingredients,
+      }
+      arrayDataOrder.push(dataOrder)
     }
-    console.log({dataOrder})
-    await saveItemInDynamo(tableName, dataOrder)
+    await saveItemsInDynamo(tableName, arrayDataOrder)
 
     res.status(200).json({ message: 'Order successfully sent to kitchen' });
   } catch (error) {

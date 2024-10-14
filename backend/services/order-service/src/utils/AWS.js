@@ -27,6 +27,33 @@ const countItemsInDynamo = async (tableName) => {
     }
 }
 
+const saveItemsInDynamo = async (tableName, items) => {
+    const params = {
+        RequestItems: {
+            [tableName]: items.map(item => ({
+                PutRequest: {
+                    Item: item, // Aquí cada ítem necesita estar dentro de un 'PutRequest'
+                },
+            })),
+        },
+    };
+
+    try {
+        // Realizar la operación 'batchWrite' para cada lote de ítems
+        const response = await dynamoDB.batchWrite(params).promise();
+        if (response.UnprocessedItems && Object.keys(response.UnprocessedItems).length > 0) {
+            console.log('Algunos ítems no se procesaron correctamente:', response.UnprocessedItems);
+            return response.UnprocessedItems
+        } else {
+            console.log('Ítems guardados exitosamente.', response);
+            return response
+        }
+    } catch (err) {
+        console.log(err)
+        throw new Error(err.message)
+    }
+}
+
 const saveItemInDynamo = async (tableName, item) => {
     const params = {
         TableName: tableName,
@@ -61,6 +88,7 @@ const getAllItemsInDynamo = async (tableName) => {
 
 module.exports = {
     countItemsInDynamo,
+    saveItemsInDynamo,
     saveItemInDynamo,
     getAllItemsInDynamo,
 }
