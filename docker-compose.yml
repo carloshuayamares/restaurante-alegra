@@ -39,6 +39,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION}
       DY_MARKET_REQUEST: "MARKET-REQUEST"
+      AWS_URL_SQS_FIFO: https://sqs.us-east-1.amazonaws.com/545124311882/CONSULTING_MARKET.fifo
   
   frontend:
     build: frontend

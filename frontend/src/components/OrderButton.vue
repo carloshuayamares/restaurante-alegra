@@ -35,7 +35,7 @@ export default {
   methods: {
     async sendOrder() {
       try {
-        const pedido = await axios.post('http://localhost:3001/api/order');
+        const pedido = await axios.post('http://localhost:3001/api/order', { cantidad: 1 });
         console.log({ pedido })
         alert('Order sent successfully!');
       } catch (error) {
