@@ -21,16 +21,20 @@ module.exports = async (req, res, next) => {
     const tableName = process.env.DY_MARKET_REQUEST
 
     const { recipe, orderId, countOrder } = req.body;
+    let { intento } = req.body;
+
     let market = false
-    let temporal = 1
     console.log(`Request for ingredients received: ${JSON.stringify(recipe)}`);
 
     const missingIngredients = recipe.ingredients.filter(
         (ingredient) => inventory[ingredient.name] < ingredient.qty
     );
 
+    console.log({inventory, missingIngredients})
+
     for (const ingredient of missingIngredients) {
         let quantityNeeded = ingredient.qty - inventory[ingredient.name];
+        let temp = 1
 
         while (quantityNeeded > 0) {
             // Hacer la solicitud a la plaza de mercado
@@ -40,19 +44,21 @@ module.exports = async (req, res, next) => {
                 market = true
 
                 const itemMarketRequest = {
-                    'ID-MARKET': `OR${countOrder + 1}-MK${temporal}`,
+                    'ID-MARKET': intento ? `OR${countOrder + 1}-${ingredient.name.toUpperCase()}-TEMP${temp}-RE${intento}` : `OR${countOrder + 1}-${ingredient.name.toUpperCase()}-TEMP${temp}`,
                     orderId: `${orderId}`,
                     ingredient: ingredient.name,
                     quantitySold,
+                    intento: intento ? `${intento}` : '',
                 }
 
                 await saveItemInDynamo(tableName, itemMarketRequest)
+
+                temp += 1
 
                 if (quantitySold > 0) {
                     inventory[ingredient.name] += quantitySold;
                     quantityNeeded -= quantitySold;
                     console.log(`Purchased ${quantitySold} of ${ingredient.name} from the market`);
-                    temporal += 1
                 } else {
                     console.log(`${ingredient.name} not available at the market`);
                     break;  // No más unidades disponibles en el mercado
@@ -77,9 +83,12 @@ module.exports = async (req, res, next) => {
         console.log(`Ingredients for ${recipe.name} are ready. Proceeding with preparation.`);
         return res.status(200).json({ success: true, market });
     } else {
-        console.log('Ingredients still missing');
+        if (intento) intento += 1
+        else intento = 1
+        console.log('Ingredients still missing', {market, intento});
         // mandar a un sqs
-        await sendMessageSQS(req.body, `${countOrder}`)
+        await sendMessageSQS(req.body, intento, `${countOrder}`)
+        // await saveItemInDynamo(  , { ...req.body, intento, countOrder: `${countOrder}`})
         // guardar en una tabla el estado en espera
         return res.status(200).json({ success: false, market, message: 'Not all ingredients available. Wait please.' });
     }

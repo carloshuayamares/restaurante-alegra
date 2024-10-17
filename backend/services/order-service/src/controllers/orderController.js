@@ -30,6 +30,7 @@ module.exports = async (req, res, next) => {
         'ID-RECIPE': response.data.selectedRecipe['ID-RECIPE'],
         status: response.data.message,
         ingredients: response.data.ingredients,
+        waiting: response.data.waiting ? 'Entrega con demora.' : 'Entrega directa.'
       }
       arrayDataOrder.push(dataOrder)
     }
