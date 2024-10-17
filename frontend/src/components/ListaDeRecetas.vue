@@ -1,36 +1,48 @@
 <template>
     <div>
-        <h2>Recetas</h2>
-        <ul>
-            <li v-for="receta in recetas" :key="receta.name">
-                {{ receta.name }}
-                <ul>
-                    <li v-for="ingrediente in receta.ingredients" :key="ingrediente.name">
-                        {{ ingrediente.name }} - {{ ingrediente.qty }}
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <h4>Recetas</h4>
     </div>
+    <v-container>
+        <v-row>
+            <v-col cols="4">
+                <RecipeList :recipes="recipes" @recipe-selected="handleRecipeSelected" />
+            </v-col>
+            <v-col cols="8">
+                <RecipeDetail :selectedRecipe="selectedRecipe" />
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
+import RecipeList from './RecetasList.vue';
+import RecipeDetail from './RecetasDetail.vue';
 import axios from 'axios';
 
 export default {
+    components: {
+        RecipeList,
+        RecipeDetail
+    },
     data() {
         return {
-            recetas: []
+            recipes: [],
+            selectedRecipe: null
         };
     },
     async created() {
         try {
             const response = await axios.post('http://localhost:3001/api/recipes');
             console.log({ response, b: response.data.recipes })
-            this.recetas = response.data.recipes;
+            this.recipes = response.data.recipes;
         } catch (error) {
             console.log(error)
             alert('Failed to consulted recipes.');
+        }
+    },
+    methods: {
+        handleRecipeSelected(recipe) {
+            this.selectedRecipe = recipe;
         }
     }
 };
