@@ -85,10 +85,9 @@ module.exports = async (req, res, next) => {
     } else {
         if (intento) intento += 1
         else intento = 1
-        console.log('Ingredients still missing', {market, intento});
+        console.log('Not all ingredients available. Wait please.', {intento});
         // mandar a un sqs
         await sendMessageSQS(req.body, intento, `${countOrder}`)
-        // await saveItemInDynamo(  , { ...req.body, intento, countOrder: `${countOrder}`})
         // guardar en una tabla el estado en espera
         return res.status(200).json({ success: false, market, message: 'Not all ingredients available. Wait please.' });
     }

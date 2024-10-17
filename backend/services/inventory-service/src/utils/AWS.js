@@ -123,8 +123,6 @@ const updateItemDY = async (tableName, orderId, SK, nuevosDatos) => {
         ReturnValues: 'UPDATED_NEW' // Opcional: devolver los valores actualizados
     };
 
-    console.log({params})
-
     try {
         const result = await dynamoDB.update(params).promise();
         console.log("Elemento actualizado con éxito:", result);
