@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Estados de Órdenes</h2>
+        <h4>Estados de Órdenes</h4>
         <v-data-table 
             :headers="headers"
             :items="orders"
