@@ -27,7 +27,7 @@ export default {
 
 <style>
 header {
-  background-color: #42b983;
+  background-color: #00b19c;
   padding: 1rem;
   color: white;
 }
