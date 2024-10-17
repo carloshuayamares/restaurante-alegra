@@ -1,24 +1,49 @@
 <template>
-    <div>
-        <h2>Ingredientes Disponibles</h2>
-        <ul>
-            <li v-for="ingrediente in ingredientes" :key="ingrediente.id">
-                {{ ingrediente.nombre }} - {{ ingrediente.cantidad }} disponibles
-            </li>
-        </ul>
-    </div>
+  <div>
+    <h4>Ingredientes</h4>
+  </div>
+  <v-container>
+    <v-row>
+      <v-col cols="4">
+        <IngredientList :ingredients="ingredients" @ingredient-selected="handleIngredientSelected" />
+      </v-col>
+      <v-col cols="8">
+        <IngredientHistory :selectedIngredient="selectedIngredient" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import IngredientList from './IngredientList.vue';
+import IngredientHistory from './IngredientHistory.vue';
+
 export default {
-    data() {
-        return {
-            ingredientes: []
-        };
-    },
-    async created() {
-        const response = await fetch('http://localhost:3000/ingredientes');
-        this.ingredientes = await response.json();
+  components: {
+    IngredientList,
+    IngredientHistory
+  },
+  data() {
+    return {
+      ingredients: [
+        { id: 1, name: 'Tomato', quantity: 5 },
+        { id: 2, name: 'Lemon', quantity: 5 },
+        { id: 3, name: 'Potato', quantity: 5 },
+        { id: 4, name: 'Rice', quantity: 5 },
+        { id: 5, name: 'Ketchup', quantity: 5 },
+        { id: 6, name: 'Lettuce', quantity: 5 },
+        { id: 7, name: 'Onion', quantity: 5 },
+        { id: 8, name: 'Cheese', quantity: 5 },
+        { id: 9, name: 'Meat', quantity: 5 },
+        { id: 10, name: 'Chicken', quantity: 5 }
+      ],
+      selectedIngredient: null
+    };
+  },
+  methods: {
+    handleIngredientSelected(ingredient) {
+      this.selectedIngredient = ingredient;
     }
+  }
 };
 </script>
