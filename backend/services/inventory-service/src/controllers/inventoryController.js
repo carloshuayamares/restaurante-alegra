@@ -16,6 +16,27 @@ let inventory = {
     chicken: 5,
 };
 
+let invetoryArray = [
+    {
+        ingredient: 'tomato',
+        qty_inicial: 5,
+        qty_actual: 8,
+        history: [
+            {
+                status: 'consumo',
+                recipe: 'ORDEN N°12',
+                intento: 1,
+                qty: 0,
+            },
+            {
+                recipe: 'ORDEN N°12',
+                intento: 2,
+                qty: 3,
+            }
+        ]
+    }
+]
+
 module.exports = async (req, res, next) => {
 
     const tableName = process.env.DY_MARKET_REQUEST
@@ -49,6 +70,8 @@ module.exports = async (req, res, next) => {
                     ingredient: ingredient.name,
                     quantitySold,
                     intento: intento ? `${intento}` : '',
+                    inventory: inventory[ingredient.name] += quantitySold,
+                    fecCrea: Date.now(),
                 }
 
                 await saveItemInDynamo(tableName, itemMarketRequest)
@@ -77,8 +100,19 @@ module.exports = async (req, res, next) => {
 
     if (allAvailable) {
         // Restar los ingredientes usados
-        recipe.ingredients.forEach((ingredient) => {
+        recipe.ingredients.forEach(async(ingredient) => {
             inventory[ingredient.name] -= ingredient.qty;
+
+            const itemInventoryRequest = {
+                'ID-MARKET': intento ? `OR${countOrder + 1}-${ingredient.name.toUpperCase()}-RE${intento}` : `OR${countOrder + 1}-${ingredient.name.toUpperCase()}`,
+                orderId: `${orderId}`,
+                ingredient: ingredient.name,
+                quantitySold: undefined,
+                intento: intento ? `${intento}` : '',
+                inventory: inventory[ingredient.name],
+                fecCrea: Date.now(),
+            }
+            await saveItemInDynamo(tableName, itemInventoryRequest)
         });
         console.log(`Ingredients for ${recipe.name} are ready. Proceeding with preparation.`);
         return res.status(200).json({ success: true, market });
