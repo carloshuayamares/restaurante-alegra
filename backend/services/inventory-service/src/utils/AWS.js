@@ -133,10 +133,50 @@ const updateItemDY = async (tableName, orderId, SK, nuevosDatos) => {
     }
 };
 
+const getAllItemsInDynamo = async (tableName) => {
+    const params = {
+        TableName: tableName,
+    };
+
+    try {
+        // Usar el método scan para obtener todos los elementos
+        const response = await dynamoDB.scan(params).promise();
+        return response.Items
+    } catch (err) {
+        console.log(err)
+        throw new Error(err.message)
+    }
+}
+
+const selectElementsTableDY = async (tableName, key, value) => {
+    // Parámetros para el scan o query
+    const params = {
+        TableName: tableName,
+        FilterExpression: '#attr = :value', // Cambia esto por tu clave primaria
+        ExpressionAttributeNames: {
+            '#attr': key,
+        },
+        ExpressionAttributeValues: {
+            ':value': value,
+        }
+    };
+    
+    try {
+        // es más eficiente cuando puedes filtrar por la clave de partición o por un índice secundario
+        const response = await dynamoDB.scan(params).promise();
+        return response.Items
+    } catch (err) {
+        console.log({err})
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     countItemsInDynamo,
     saveItemInDynamo,
     sendMessageSQS,
     receiveMessageSQS,
     updateItemDY,
+    getAllItemsInDynamo,
+    selectElementsTableDY,
 }

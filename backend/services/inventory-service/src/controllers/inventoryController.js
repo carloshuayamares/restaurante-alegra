@@ -58,7 +58,7 @@ module.exports = async (req, res, next) => {
                 temp += 1
 
                 if (quantitySold > 0) {
-                    inventory[ingredient.name] += quantitySold;
+                    // inventory[ingredient.name] += quantitySold;
                     quantityNeeded -= quantitySold;
                     console.log(`Purchased ${quantitySold} of ${ingredient.name} from the market`);
                 } else {
@@ -86,7 +86,7 @@ module.exports = async (req, res, next) => {
                 'ID-MARKET': intento ? `OR${countOrder + 1}-${ingredient.name.toUpperCase()}-RE${intento}` : `OR${countOrder + 1}-${ingredient.name.toUpperCase()}`,
                 orderId: `${orderId}`,
                 ingredient: ingredient.name,
-                quantitySold: undefined,
+                quantityUsed: ingredient.qty,
                 intento: intento ? `${intento}` : '',
                 inventory: inventory[ingredient.name],
                 fecCrea: Date.now(),
