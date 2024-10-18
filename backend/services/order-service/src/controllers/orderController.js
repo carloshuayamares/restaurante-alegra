@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { saveItemsInDynamo, countItemsInDynamo } = require('../utils/AWS')
+const { saveItemInDynamo, saveItemsInDynamo, countItemsInDynamo } = require('../utils/AWS')
 
 module.exports = async (req, res, next) => {
 
@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 
   try {
     const countOrder = await countItemsInDynamo(tableName)
-    const arrayDataOrder = []
+    // const arrayDataOrder = []
 
     for (let i = 0; i < parseInt(cantidad); i++) {
 
@@ -32,9 +32,10 @@ module.exports = async (req, res, next) => {
         ingredients: response.data.ingredients,
         waiting: response.data.waiting ? 'Entrega con demora.' : 'Entrega directa.'
       }
-      arrayDataOrder.push(dataOrder)
+      // arrayDataOrder.push(dataOrder)
+      await saveItemInDynamo(tableName, dataOrder)
     }
-    await saveItemsInDynamo(tableName, arrayDataOrder)
+    // await saveItemsInDynamo(tableName, arrayDataOrder)
 
     res.status(200).json({ message: 'Order successfully sent to kitchen' });
   } catch (error) {

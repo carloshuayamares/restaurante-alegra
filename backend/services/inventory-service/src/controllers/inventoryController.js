@@ -16,27 +16,6 @@ let inventory = {
     chicken: 5,
 };
 
-let invetoryArray = [
-    {
-        ingredient: 'tomato',
-        qty_inicial: 5,
-        qty_actual: 8,
-        history: [
-            {
-                status: 'consumo',
-                recipe: 'ORDEN N°12',
-                intento: 1,
-                qty: 0,
-            },
-            {
-                recipe: 'ORDEN N°12',
-                intento: 2,
-                qty: 3,
-            }
-        ]
-    }
-]
-
 module.exports = async (req, res, next) => {
 
     const tableName = process.env.DY_MARKET_REQUEST
