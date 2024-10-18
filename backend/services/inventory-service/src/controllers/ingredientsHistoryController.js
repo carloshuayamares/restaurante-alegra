@@ -18,14 +18,14 @@ const timeCreation = new Date(1729233614074)
 
 // Convertir a una cadena legible en la zona horaria de Perú (GMT-5)
 let options = {
-    timeZone: 'America/Lima',           // Zona horaria de Perú
+    timeZone: 'America/Lima',
     year: 'numeric',
-    month: 'numeric',                      // Muestra el nombre completo del mes
+    month: 'numeric',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
-    hour12: false                       // 24 horas
+    hour12: false,
   };
 
 module.exports = async (req, res, next) => {

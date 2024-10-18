@@ -23,13 +23,13 @@ module.exports = async (req, res, next) => {
 
     if (response.data.success) {
       console.log(`Ingredients for ${selectedRecipe.name} are available, preparing the dish!`);
-      return res.status(200).json({ selectedRecipe, waiting: false, message: 'El plato se está preparando.', ingredients: response.data.market ? 'Mercado': 'Inventario' });
+      return res.status(200).json({ selectedRecipe, waiting: false, status: 'Listo', message: 'El plato se está preparando.', ingredients: response.data.market ? 'Mercado': 'Inventario' });
     } else {
       console.log('Ingredients not available yet');
-      return res.status(200).json({ selectedRecipe, waiting: true, message: 'Ingredientes no disponibles.', ingredients: response.data.market ? 'Mercado': 'Inventario' });
+      return res.status(200).json({ selectedRecipe, waiting: true, status: 'Pendiente', message: 'Ingredientes no disponibles.', ingredients: response.data.market ? 'Mercado': 'Inventario' });
     }
   } catch (error) {
     console.error('Error requesting ingredients:', error.message);
-    return res.status(500).json({ selectedRecipe, waiting: true, message: 'Error preparing the dish' });
+    return res.status(500).json({ selectedRecipe, waiting: true, status: 'Errado', message: 'Error preparing the dish' });
   }
 };

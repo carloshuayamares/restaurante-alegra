@@ -3,9 +3,8 @@
     <header>
       <nav>
         <ul>
-          <li><router-link to="/">Boton de Ordenar</router-link></li>
+          <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/recetas">Recetas</router-link></li>
-          <!-- <li><router-link to="/pedir-plato">Pedir Plato</router-link></li> -->
           <li><router-link to="/ordenes">Estado de Órdenes</router-link></li>
           <li><router-link to="/ingredientes">Ingredientes</router-link></li>
         </ul>
@@ -26,6 +25,14 @@ export default {
 </script>
 
 <style>
+
+/* Estilo personalizado para la pestaña activa */
+.router-link-active {
+  font-weight: bold;
+  color: #000000;  /* Cambia este color al que prefieras */
+  border-bottom: 2px solid #ffffff;
+}
+
 header {
   background-color: #00b19c;
   padding: 1rem;

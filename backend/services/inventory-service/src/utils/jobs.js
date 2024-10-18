@@ -13,8 +13,8 @@ const reInventoryController = async (messageBody) => {
                     orderId: messageBody.orderId,
                     SK: messageBody.recipe['ID-RECIPE'],
                     nuevosDatos: {
-                        nuevoEstado: 'Dish is being prepared. Thanks.',
-                        descripcionEspera: 'Gracias por su espera'
+                        nuevoEstado: 'Listo', // status cambiar
+                        nuevaDescripcion: 'Gracias por su espera.',
                     }
                 }
              );

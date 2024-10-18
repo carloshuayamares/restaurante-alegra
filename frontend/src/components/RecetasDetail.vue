@@ -22,8 +22,8 @@ export default {
     data() {
         return {
             headers: [
-                { text: 'Ingrediente', value: 'name' },
-                { text: 'Cantidad', value: 'qty' }
+                { title: 'Ingrediente', key: 'name' },
+                { title: 'Cantidad', key: 'qty' }
             ]
         };
     }

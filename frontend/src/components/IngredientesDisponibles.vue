@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <h4>Ingredientes</h4>
-  </div>
   <v-container>
     <v-row>
       <v-col cols="4">
+        <div><h4>Ingredientes</h4></div>
         <IngredientList :ingredients="ingredients" @ingredient-selected="handleIngredientSelected" />
       </v-col>
       <v-col cols="8">

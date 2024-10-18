@@ -106,21 +106,21 @@ const receiveMessageSQS = async () => {
 
 const updateItemDY = async (tableName, orderId, SK, nuevosDatos) => {
     const params = {
-        TableName: tableName, // Nombre de la tabla
+        TableName: tableName,
         Key: {
-            'orderId': orderId, // Clave primaria del elemento que quieres actualizar
+            'orderId': orderId,
             'ID-RECIPE': SK,
         },
-        UpdateExpression: 'set #status = :nuevoEstado, #waiting = :descripcionEspera', // Expresión de actualización
+        UpdateExpression: 'set #status = :nuevoEstado, #description = :nuevaDescripcion', // Expresión de actualización
         ExpressionAttributeNames: {
-            '#status': 'status', // Nombre del campo que quieres actualizar
-            '#waiting': 'waiting' // Otro campo a actualizar (opcional)
+            '#status': 'status',
+            '#description': 'description',
         },
         ExpressionAttributeValues: {
             ':nuevoEstado': nuevosDatos.nuevoEstado, // Nuevo valor para el campo
-            ':descripcionEspera': nuevosDatos.descripcionEspera // Otro nuevo valor
+            ':nuevaDescripcion': nuevosDatos.nuevaDescripcion,
         },
-        ReturnValues: 'UPDATED_NEW' // Opcional: devolver los valores actualizados
+        ReturnValues: 'UPDATED_NEW',
     };
 
     try {

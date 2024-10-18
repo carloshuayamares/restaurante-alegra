@@ -17,10 +17,12 @@ export default {
     data() {
         return {
             headers: [
-                { text: 'IndiceTiempo', key: 'orderId' },
-                { text: 'OrdendelPedido', key: 'ID-ORDER' },
-                { text: 'NombredelPedido', key: 'name' },
-                { text: 'EstatusdelPedido', key: 'status' },
+                { title: 'Hora del Pedido', key: 'orderId', align: 'center' },
+                { title: 'Numero de Orden', key: 'ID-ORDER', align: 'center' },
+                { title: 'Nombre del Pedido', key: 'name', align: 'center' },
+                { title: 'Estatus del Pedido', key: 'status', align: 'center' },
+                { title: 'Detalle del Pedido', key: 'description', align: 'center' },
+                { title: 'Tipo de Entrega', key: 'waiting', align: 'center' },
             ],
             orders: [],
         };
@@ -31,11 +33,22 @@ export default {
             const response = await axios.post('http://localhost:3001/api/statusOrders');
             console.log({ response: response.data.orders })
             const orders = response.data.orders.map((x) => {
+                let date = new Date(x.orderId);
                 return {
-                    orderId: x.orderId,
+                    orderId: date.toLocaleString('es-PE', {
+                        timeZone: 'America/Lima',
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                    }),
                     'ID-ORDER': x['ID-ORDER'],
                     name: x.name,
                     status: x.status,
+                    description: x.description,
+                    waiting: x.waiting,
                 }
             })
             console.log({ orders })
