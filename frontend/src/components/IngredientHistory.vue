@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     selectedIngredient: Object
@@ -22,6 +24,7 @@ export default {
     return {
       headers: [
         { text: 'Fecha', value: 'date' },
+        { text: 'N° Orden', value: 'order' },
         { text: 'Tipo', value: 'type' }, // Compra o Uso
         { text: 'Cantidad', value: 'quantity' }
       ],
@@ -36,15 +39,17 @@ export default {
     }
   },
   methods: {
-    fetchPurchaseHistory() { // ingredientId
+    async fetchPurchaseHistory(ingredientId) { // ingredientId
       // Aquí harías la llamada al backend para obtener el historial de compras y uso
-      // Simulando los datos
-      this.purchaseHistory = [
-        { date: '2024-10-01', type: 'Compra', quantity: 5 },
-        { date: '2024-10-05', type: 'Uso', quantity: 1 },
-        { date: '2024-10-07', type: 'Compra', quantity: 3 },
-        { date: '2024-10-10', type: 'Uso', quantity: 1 }
-      ];
+      try {
+        const response = await axios.post('http://localhost:3003/api/ingredients-history', { ingredientId });
+        console.log({ purchaseHistory: response.data.purchaseHistory, ingredientId })
+        this.purchaseHistory = response.data.purchaseHistory;
+      } catch (error) {
+        console.log(error)
+        alert('Failed to consulted recipes.');
+      }
+
     }
   }
 };
