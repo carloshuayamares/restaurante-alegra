@@ -23,10 +23,10 @@ export default {
   data() {
     return {
       headers: [
-        { title: 'Fecha', key: 'date' },
-        { title: 'N° Orden', key: 'order' },
-        { title: 'Tipo', key: 'type' },
-        { title: 'Cantidad', key: 'quantity' }
+        { title: 'Fecha', key: 'date', align: 'center' },
+        { title: 'N° Orden', key: 'order', align: 'center' },
+        { title: 'Tipo', key: 'type', align: 'center' },
+        { title: 'Cantidad', key: 'quantity', align: 'center' }
       ],
       purchaseHistory: []
     };

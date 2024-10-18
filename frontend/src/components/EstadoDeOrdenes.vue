@@ -4,7 +4,7 @@
         <v-data-table 
             :headers="headers"
             :items="orders"
-            class="elevation-1">
+            class="elevation-1 bold-headers">
         </v-data-table>
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
         return {
             headers: [
                 { title: 'Hora del Pedido', key: 'orderId', align: 'center' },
-                { title: 'Numero de Orden', key: 'ID-ORDER', align: 'center' },
+                { title: 'Número de Orden', key: 'ID-ORDER', align: 'center' },
                 { title: 'Nombre del Pedido', key: 'name', align: 'center' },
                 { title: 'Estatus del Pedido', key: 'status', align: 'center' },
                 { title: 'Detalle del Pedido', key: 'description', align: 'center' },
@@ -65,5 +65,8 @@ export default {
 <style scoped>
 h1 {
     margin-bottom: 20px;
+}
+.bold-headers .v-data-table-header th {
+  font-weight: bold; /* Aplica el estilo de negrita */
 }
 </style>

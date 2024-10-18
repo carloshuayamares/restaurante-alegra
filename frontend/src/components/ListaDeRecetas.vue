@@ -2,11 +2,11 @@
 
     <v-container>
         <v-row>
-            <v-col cols="4">
-                <div><h4>Recetas</h4></div>
+            <v-col cols="5">
+                <div><h4>Id Receta / Nombre</h4></div>
                 <RecipeList :recipes="recipes" @recipe-selected="handleRecipeSelected" />
             </v-col>
-            <v-col cols="8">
+            <v-col cols="7">
                 <RecipeDetail :selectedRecipe="selectedRecipe" />
             </v-col>
         </v-row>
@@ -26,6 +26,7 @@ export default {
     data() {
         return {
             recipes: [],
+            idRecipes: [],
             selectedRecipe: null
         };
     },
